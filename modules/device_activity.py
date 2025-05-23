@@ -3,7 +3,7 @@ from collections import defaultdict
 import time
 
 def analyze(filepath):
-    print("\n📡 [Device Activity Report]")
+    print("\n [Device Activity Report]")
 
     try:
         # Use display_filter to speed things up (adjust as needed)
@@ -13,17 +13,17 @@ def analyze(filepath):
             display_filter="dns or http or tcp"
         )
     except Exception as e:
-        print(f"❌ Error opening file: {e}")
+        print(f" Error opening file: {e}")
         return
 
     start_time = time.time()
 
     try:
-        print("⏳ Preloading packets into memory...")
+        print(" Preloading packets into memory...")
         cap.load_packets()
-        print(f"✅ Loaded {len(cap)} packets in {round(time.time() - start_time, 2)} seconds.")
+        print(f" Loaded {len(cap)} packets in {round(time.time() - start_time, 2)} seconds.")
     except Exception as e:
-        print(f"❌ Could not load packets: {e}")
+        print(f" Could not load packets: {e}")
         return
 
     # Dictionary to store activity data for each device (by IP)
@@ -55,19 +55,19 @@ def analyze(filepath):
             continue
 
     cap.close()
-    print(f"\n✅ Processed {len(cap)} packets in total.")
+    print(f"\n Processed {len(cap)} packets in total.")
 
     # Display results
     if not device_info:
-        print("⚠️ No device activity found. Try adjusting your filter (e.g., include TCP or HTTP).")
+        print(" No device activity found. Try adjusting your filter (e.g., include TCP or HTTP).")
         return
 
-    print(f"\n🧠 Found {len(device_info)} unique devices on the network.\n")
+    print(f"\n Found {len(device_info)} unique devices on the network.\n")
     for device_ip, stats in device_info.items():
-        print(f"📱 Device IP Address: {device_ip}")
+        print(f" Device IP Address: {device_ip}")
         print(f"   → Talked to {len(stats['connected_to'])} other devices or websites")
         print(f"   → Types of network tech used: {', '.join(stats['used_technologies'])}")
         print(f"   → Total data sent: {stats['total_data_sent']} bytes")
         print(f"   → Number of messages sent: {stats['number_of_messages']}\n")
 
-    print("✅ Done. This gives you a high-level view of each device’s communication behavior.\n")
+    print(" Done. This gives you a high-level view of each device's communication behavior.\n")
