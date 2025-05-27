@@ -2,7 +2,7 @@ import subprocess
 import time
 import os
 
-def start_capture(interface='eth0', output_file='captures/output.pcap', duration=10):
+def start_capture(interface='Wi-Fi', output_file='captures/output.pcap', duration=10):
     # Ensure output folder exists
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
@@ -17,9 +17,6 @@ def start_capture(interface='eth0', output_file='captures/output.pcap', duration
     print(f"Starting capture on {interface} for {duration} seconds...")
     subprocess.run(cmd)
     print(f"Capture saved to {output_file}")
-
-# Example usage
-start_capture(interface="Wi-Fi", output_file="captures/my_traffic.pcap", duration=15)
 
 def capture_tshark_main():
     start_capture()

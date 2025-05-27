@@ -1,7 +1,6 @@
 from modules import traffic_summary, device_activity, capture_tshark
 
-def main():
-    filepath = 'sample_data/test123.pcapng'
+def main(filepath="captures\\output.pcap"):
     print(f"Loading file: {filepath}")
 
     traffic_summary.analyze(filepath)
@@ -14,6 +13,6 @@ if __name__ == "__main__":
     # Captures tshark data, commnet out to not collect data
     # capture_tshark_main()
 
-    main()
+    main("sample_data/test123.pcapng")
 
 
