@@ -32,6 +32,15 @@ def check_black_listed_ips(ip_set, black_listed_ips):
     except Exception as e:
         print(f"Error checking blacklisted IPs: {e}")
         
+def check_black_listed_ip(ip, black_listed_ips):
+    try:
+        if ip in black_listed_ips:
+            print(f"ALERT - Black listed ip is on your network!: {ip}")
+
+    except Exception as e:
+        print(f"Error checking blacklisted IPs: {e}")
+
+
 if __name__ == "__main__":
     ip_set = get_unique_ips()
 
