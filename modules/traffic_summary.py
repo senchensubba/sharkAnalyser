@@ -1,6 +1,20 @@
 import pyshark
 import pandas as pd
 import time
+import smtplib
+from email.mime.text import MIMEText
+
+def send_gmail_email(subject, body, sender, recipient, username, password):
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = recipient
+
+    # Use Gmail SMTP settings
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(username, ohjlpjjajarmltwi)  # Gmail app password here
+        server.sendmail(sender, [recipient], msg.as_string())
 
 def analyze(filepath):
     print("\n [Network Traffic Summary]")
@@ -8,11 +22,10 @@ def analyze(filepath):
 
     try:
         cap = pyshark.FileCapture(
-    filepath,
-    only_summaries=True,
-    display_filter="dns or http"
-    )
-
+            filepath,
+            only_summaries=True,
+            display_filter="dns or http"
+        )
     except Exception as e:
         print(f" Could not open the file: {e}")
         return
@@ -51,6 +64,31 @@ def analyze(filepath):
     print(f"\n Processed {len(packets)} packets in total.")
 
     df = pd.DataFrame(packets)
+
+    THRESHOLD_BYTES = 100 * 1024 * 1024  # 100 MB
+
+    large_downloads = {}
+    alert_body = ""
+    for ip in df['Destination'].unique():
+        total_received = df[df['Destination'] == ip]['Length'].sum()
+        if total_received > THRESHOLD_BYTES:
+            large_downloads[ip] = total_received
+            alert_body += f"{ip}: {total_received/1024/1024:.2f} MB\n"
+
+    if large_downloads:
+        print("\nALERT: Large downloads detected!")
+        for ip, size in large_downloads.items():
+            print(f"  → {ip} received {size/1024/1024:.2f} MB")
+
+        send_gmail_email(
+            subject="Network Alert: Large Download Detected",
+            body=alert_body,
+            sender="johnsmith314350@gmail.com",
+            recipient="johnsmith314350@gmail.com",  # or any recipient
+            username="johnsmith314350@gmail.com",
+            password="ohjlpjjajarmltwi"  # <-- app password here
+        )
+        # --------------------------------------------------
 
     print(f"\n Total messages observed: {len(df)}")
     print(f" Total data transferred: {df['Length'].sum()} bytes")
