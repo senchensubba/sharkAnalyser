@@ -5,16 +5,20 @@ import smtplib
 from email.mime.text import MIMEText
 
 def send_gmail_email(subject, body, sender, recipient, username, password):
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = recipient
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = recipient
 
-    # Use Gmail SMTP settings
-    with smtplib.SMTP('smtp.gmail.com', 587) as server:
-        server.starttls()
-        server.login(username, ohjlpjjajarmltwi)  # Gmail app password here
-        server.sendmail(sender, [recipient], msg.as_string())
+        # Use Gmail SMTP settings
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(username, "ohjlpjjajarmltwi")  # Gmail app password here
+            server.sendmail(sender, [recipient], msg.as_string())
+            print(f"Email sent to {recipient} with subject: {subject}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 def analyze(filepath):
     print("\n [Network Traffic Summary]")

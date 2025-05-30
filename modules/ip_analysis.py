@@ -1,4 +1,5 @@
 import pyshark
+from traffic_summary import send_gmail_email
 
 def get_unique_ips(filepath='captures/my_traffic.pcap'):
     try:
@@ -27,7 +28,16 @@ def check_black_listed_ips(ip_set, black_listed_ips):
     try:
         for ip in ip_set:
             if ip in black_listed_ips:
-                print(f"ALERT - Black listed ip is on your network!: {ip}")
+                ip_info = f"ALERT - Black listed ip is on your network!: {ip}"
+                print(ip_info)
+                send_gmail_email(
+                    subject="Network Alert: Black Listed IP",
+                    body=ip_info,
+                    sender="johnsmith314350@gmail.com",
+                    recipient="johnsmith314350@gmail.com",  # or any recipient
+                    username="johnsmith314350@gmail.com",
+                    password="ohjlpjjajarmltwi"  # <-- app password here
+                )
 
     except Exception as e:
         print(f"Error checking blacklisted IPs: {e}")
@@ -35,8 +45,16 @@ def check_black_listed_ips(ip_set, black_listed_ips):
 def check_black_listed_ip(ip, black_listed_ips):
     try:
         if ip in black_listed_ips:
-            print(f"ALERT - Black listed ip is on your network!: {ip}")
-
+            ip_info = f"ALERT - Black listed ip is on your network!: {ip}"
+            print(ip_info)
+            send_gmail_email(
+                subject="Network Alert: Black Listed IP",
+                body=ip_info,
+                sender="johnsmith314350@gmail.com",
+                recipient="johnsmith314350@gmail.com",  # or any recipient
+                username="johnsmith314350@gmail.com",
+                password="ohjlpjjajarmltwi"  # <-- app password here
+            )
     except Exception as e:
         print(f"Error checking blacklisted IPs: {e}")
 
