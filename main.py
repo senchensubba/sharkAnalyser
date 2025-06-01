@@ -1,14 +1,30 @@
-from modules import traffic_summary, device_activity, capture_tshark, local_db, ip_analysis
+from traffic_summary import analyze
+from device_activity import analyze as device_analyze
+from ip_analysis import get_unique_ips, check_black_listed_ips
+from activity_monitoring import detect_unusual_ports, detect_frequent_dns_requests
+import capture_tshark
+import local_db
 
 def main(filepath="captures\\output.pcap"):
     print(f"Loading file: {filepath}")
 
-    traffic_summary.analyze(filepath)
-    device_activity.analyze(filepath)
-    ip_set = ip_analysis.get_unique_ips(filepath)
+    # General network stats
+    analyze(filepath)
 
+    # Device communication behavior
+    device_analyze(filepath)
+
+    # Get and analyze IPs
+    ip_set = get_unique_ips(filepath)
     black_listed_ips = {"192.168.1.232", "192.168.1.1"}
-    ip_analysis.check_black_listed_ips(ip_set, black_listed_ips)
+    check_black_listed_ips(ip_set, black_listed_ips)
+
+    # New: Unusual Port Usage Detection
+    detect_unusual_ports(filepath)
+
+    # New: Frequent DNS Request Detection
+    threat_domains = {"malicious.com", "stealth-c2.io", "badexample.xyz"}  # Mock threat feed
+    detect_frequent_dns_requests(filepath, dns_threshold=80, threat_feed=threat_domains)
 
 
 def capture_tshark_main():
