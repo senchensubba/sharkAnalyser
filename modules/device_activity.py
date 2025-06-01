@@ -49,7 +49,7 @@ def analyze(filepath):
                 info['number_of_messages'] += 1
 
             if i % 100 == 0:
-                print(f"   → Processed {i} packets...", end='\r')
+                print(f"   -> Processed {i} packets...", end='\r')
 
         except Exception:
             continue
@@ -65,9 +65,9 @@ def analyze(filepath):
     print(f"\n Found {len(device_info)} unique devices on the network.\n")
     for device_ip, stats in device_info.items():
         print(f" Device IP Address: {device_ip}")
-        print(f"   → Talked to {len(stats['connected_to'])} other devices or websites")
-        print(f"   → Types of network tech used: {', '.join(stats['used_technologies'])}")
-        print(f"   → Total data sent: {stats['total_data_sent']} bytes")
-        print(f"   → Number of messages sent: {stats['number_of_messages']}\n")
+        print(f"   -> Talked to {len(stats['connected_to'])} other devices or websites")
+        print(f"   -> Types of network tech used: {', '.join(stats['used_technologies'])}")
+        print(f"   -> Total data sent: {stats['total_data_sent']} bytes")
+        print(f"   -> Number of messages sent: {stats['number_of_messages']}\n")
 
     print(" Done. This gives you a high-level view of each device's communication behavior.\n")

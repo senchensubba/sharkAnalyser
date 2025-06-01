@@ -60,7 +60,7 @@ def check_black_listed_ip(ip, black_listed_ips):
 
 
 if __name__ == "__main__":
-    ip_set = get_unique_ips()
+    ip_set = get_unique_ips('captures/my_traffic.pcap')
 
     black_listed_ips = {"192.168.1.232", "192.168.1.1"}
     check_black_listed_ips(ip_set, black_listed_ips)
