@@ -1,7 +1,7 @@
 from traffic_summary import analyze
 from device_activity import analyze as device_analyze
 from ip_analysis import get_unique_ips, check_black_listed_ips
-from activity_monitoring import detect_unusual_ports, detect_frequent_dns_requests
+from activity_monitoring import detect_unusual_ports, detect_frequent_dns_requests, detect_suspicious_tlds_and_geos, detect_odd_protocol_behavior, detect_encrypted_traffic_to_untrusted_hosts
 import capture_tshark
 import local_db
 
@@ -26,6 +26,11 @@ def main(filepath="captures\\output.pcap"):
     threat_domains = {"malicious.com", "stealth-c2.io", "badexample.xyz"}  # Mock threat feed
     detect_frequent_dns_requests(filepath, dns_threshold=80, threat_feed=threat_domains)
 
+    detect_suspicious_tlds_and_geos(filepath)
+
+    detect_odd_protocol_behavior(filepath)
+
+    detect_encrypted_traffic_to_untrusted_hosts(filepath)
 
 def capture_tshark_main():
     capture_tshark.start_capture()
